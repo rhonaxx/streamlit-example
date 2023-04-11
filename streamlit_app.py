@@ -26,7 +26,7 @@ def generate_image(prompt):
     image = Image.open(BytesIO(image_response.content))
     return image
 
-st.title "Welcome to Image Visualizer."
+st.title ("Welcome to Image Visualizer.")
          "Describe the image. Example: A flying car powered by solar energy."
 
 #prompt user for new input
