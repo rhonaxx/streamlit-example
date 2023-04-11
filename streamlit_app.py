@@ -1,38 +1,58 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
+!pip install openai
+!pip install streamlit
+
 import streamlit as st
+import openai
+import requests
+import os
+from PIL import Image
+from io import BytesIO
 
-"""
-# Welcome to Streamlit!
+%env OPENAI_API_KEY=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
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
+#set OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+#define function to generate image from prompt
+def generate_image(prompt):
+    #generate image using DALL-E API
+    response = openai.Image.create(
+      prompt=prompt,
+      n=1,
+      size="512x512"
+    )
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+    #get image URL from response
+    image_url = response['data'][0]['url']
 
+    #fetch image from URL and return as PIL Image object
+    image_response = requests.get(image_url)
+    image = Image.open(BytesIO(image_response.content))
+    return image
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+#define list of interesting prompts
+prompts = [
+    "A flying car powered by solar energy",
+    "A tree made of candy",
+    "A city on the moon",
+    "A robot serving coffee to people in a park",
+    "A giant sea monster attacking a ship"
+]
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+#display list of prompts to user
+st.sidebar.title("Select a prompt")
+selected_prompt = st.sidebar.selectbox("", prompts)
 
-    points_per_turn = total_points / num_turns
+#generate image for selected prompt and display
+st.title(selected_prompt)
+image = generate_image(selected_prompt)
+st.image(image, caption=selected_prompt)
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
+#prompt user for new input
+new_prompt = st.text_input("Enter a prompt:")
 
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+#generate image for new prompt and display
+if new_prompt:
+    st.title(new_prompt)
+    image = generate_image(new_prompt)
+    st.image(image, caption=new_prompt)
