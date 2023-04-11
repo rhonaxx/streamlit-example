@@ -27,7 +27,7 @@ def generate_image(prompt):
     return image
 
 st.title "Welcome to Image Visualizer."
-         ""Describe the image. Example: A flying car powered by solar energy.""
+         "Describe the image. Example: A flying car powered by solar energy."
 
 #prompt user for new input
 new_prompt = st.text_input("Enter a prompt:")
