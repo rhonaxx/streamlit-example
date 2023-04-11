@@ -26,7 +26,14 @@ def generate_image(prompt):
     image = Image.open(BytesIO(image_response.content))
     return image
 
-
+#define list of interesting prompts
+prompts = [
+    "A flying car powered by solar energy",
+    "A tree made of candy",
+    "A city on the moon",
+    "A robot serving coffee to people in a park",
+    "A giant sea monster attacking a ship"
+]
 
 #display list of prompts to user
 st.sidebar.title("Select a prompt")
