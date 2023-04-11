@@ -5,7 +5,6 @@ import os
 from PIL import Image
 from io import BytesIO
 
-OPENAI_API_KEY=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
 
 #set OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
