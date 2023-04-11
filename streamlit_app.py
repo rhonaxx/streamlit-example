@@ -7,7 +7,7 @@ from io import BytesIO
 
 
 #set OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = st.secrets["api_key"]
 
 #define function to generate image from prompt
 def generate_image(prompt):
