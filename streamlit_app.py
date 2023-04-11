@@ -1,5 +1,5 @@
-!pip install openai
-!pip install streamlit
+pip install openai
+pip install streamlit
 
 import streamlit as st
 import openai
